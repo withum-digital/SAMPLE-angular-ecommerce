@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Product } from '../../shared/models/product';
-import { BehaviorSubject, Observable, map, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map, of, tap, debounceTime, delay } from 'rxjs';
 import { ProductApiService } from './product-api.service';
 
 @Injectable({
@@ -19,6 +19,8 @@ export class ProductService {
     }
 
     return this.productApiService.getProducts().pipe(
+      tap(() => console.log('why is my debug operator not here!')),
+      delay(4000),
       tap((products: Product[]) => {
         this.productsCache = products;
         this.productsSubject.next(products);
